@@ -32,8 +32,7 @@ namespace FileManagerProject
             PopulateListView(LeftDirectory, listView1);
             PopulateListView(RightDirectory, listView2);
 
-            textBox1.Text = LeftDirectory.FullName;
-            textBox2.Text = RightDirectory.FullName;
+            
 
         }
 
@@ -221,6 +220,19 @@ namespace FileManagerProject
                 items.Add(Directory.GetCurrentDirectory() + "\\" + item.Text);
             }
             fileManagerFacade.cut(items);
+        }
+
+        private void toolStripButton5_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var searchBox = new SearchForm();
+                searchBox.ShowDialog();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public void DeleteFiles(object sender, EventArgs e)
