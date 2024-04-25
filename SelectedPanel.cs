@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FileManagerProject
 {
-    public enum CurrPanel
+    public enum SelectedPanel
     {
         left,
         right

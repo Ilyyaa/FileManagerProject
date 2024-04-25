@@ -1,14 +1,74 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic.FileIO;
 
 namespace FileManagerProject
 {
     internal class FileManagerFacade
     {
         public OperationEffect _effect = OperationEffect.copy;
+        
+        DirectoryInfo leftDirectory, rightDirectory;
+        public void SetDirectory(SelectedPanel currPanel, DirectoryInfo rootDirectory)
+        {
+            if (currPanel == SelectedPanel.left)
+            {
+                leftDirectory = rootDirectory;
+            }
+            else
+                rightDirectory = rootDirectory;
+        }
+        public bool IsRootDirectory(SelectedPanel currPanel)
+        {
+            if(currPanel == SelectedPanel.left)
+            {
+                if (leftDirectory.Parent != null)
+                    return false;
+                else
+                    return true;
+            }
+            else
+            {
+                if (rightDirectory.Parent != null)
+                    return false;
+                else
+                    return true;
+            }
+        }
+
+        public DirectoryInfo[] GetDirectories(SelectedPanel currPanel)
+        {
+            if(currPanel == SelectedPanel.left)
+            {
+                return leftDirectory.GetDirectories();
+            }
+            else
+                return rightDirectory.GetDirectories();
+        }
+
+        public FileInfo[] GetFiles(SelectedPanel currPanel)
+        {
+            if (currPanel == SelectedPanel.left)
+            {
+                return leftDirectory.GetFiles();
+            }
+            else
+                return rightDirectory.GetFiles();
+        }
+
+        public void SetCurrentDirectory(SelectedPanel currPanel)
+        {
+            if(currPanel == SelectedPanel.left)
+            {
+                Directory.SetCurrentDirectory(leftDirectory.FullName);
+            }
+            else
+                Directory.SetCurrentDirectory(rightDirectory.FullName);
+        }
 
         public void copy(List<string> paths)
         {
@@ -103,11 +163,11 @@ namespace FileManagerProject
             {
                 if (File.Exists(filePath))
                 {
-                    File.Delete(filePath);
+                    FileSystem.DeleteFile(filePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
                 }
                 else if (Directory.Exists(filePath))
                 {
-                    Directory.Delete(filePath, true); // Recursive delete for directories
+                    FileSystem.DeleteDirectory(filePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin); // Recursive delete for directories
                 }
             }
             paths.Clear(); // Clear the list after deletion

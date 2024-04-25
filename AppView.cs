@@ -8,102 +8,45 @@ using static System.Collections.Specialized.BitVector32;
 using static System.Net.WebRequestMethods;
 using System.Xml.Linq;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Reflection.Metadata.Ecma335;
 
 namespace FileManagerProject
 {
-    public partial class Form1 : Form
+    public partial class AppView : Form, IView
     {
-        AllDrives AllDrives = new AllDrives();
-        DirectoryInfo LeftDirectory, RightDirectory;
-        CurrPanel cPanel;
+        Presenter? presenter;
+        SelectedPanel cPanel;
         FileManagerFacade fileManagerFacade;
 
-        public Form1()
+        public AppView()
         {
             InitializeComponent();
             fileManagerFacade = new FileManagerFacade();
-            comboBox1.Items.AddRange(AllDrives.DrivesArray);
-            comboBox2.Items.AddRange(AllDrives.DrivesArray);
-            comboBox1.SelectedIndex = comboBox2.SelectedIndex = 0;
-
-            LeftDirectory = AllDrives.DrivesArray[0].RootDirectory;
-            RightDirectory = AllDrives.DrivesArray[0].RootDirectory;
-
-            PopulateListView(LeftDirectory, listView1);
-            PopulateListView(RightDirectory, listView2);
-
-            
-
         }
 
-
-        public void PopulateListView(DirectoryInfo directory, ListView listview)
+        public void SetPresenter(Presenter p)
         {
-            imageList1.Images.Clear();
-            imageList2.Images.Clear();
-            listview.Items.Clear();
-
-            if (directory.Parent != null)
-            {
-                ListViewItem item = new ListViewItem("..");
-                item.Tag = "ArrowUp";
-                item.ImageKey = "arrowup";
-                listview.Items.Add(item);
-                imageList1.Images.Add("arrowup", Properties.Resources.ArrowUp);
-                imageList2.Images.Add("arrowup", Properties.Resources.ArrowUp);
-            }
-
-            if (directory.GetDirectories().Length > 0)
-            {
-                imageList1.Images.Add("folder", Properties.Resources.folder);
-                imageList2.Images.Add("folder", Properties.Resources.folder);
-
-                foreach (var dir in directory.GetDirectories())
-                {
-                    ListViewItem item = new ListViewItem(dir.Name);
-                    item.Tag = "Dir";
-                    item.SubItems.Add("");
-                    item.SubItems.Add("<DIR>");
-                    item.SubItems.Add(dir.CreationTime.ToShortDateString());
-                    item.ImageKey = "folder";
-                    listview.Items.Add(item);
-                }
-            }
-
-            foreach (var file in directory.GetFiles())
-            {
-                imageList1.Images.Add(file.FullName, Icon.ExtractAssociatedIcon(file.FullName).ToBitmap());
-                imageList2.Images.Add(file.FullName, Icon.ExtractAssociatedIcon(file.FullName).ToBitmap());
-                ListViewItem item = new ListViewItem(file.Name);
-                item.Tag = "File";
-                item.ImageKey = file.FullName;
-                // Добавить элемент в ListView
-                listview.Items.Add(item);
-                item.SubItems.Add(file.Extension);
-                item.SubItems.Add(file.Length.ToString() + " bytes");
-                item.SubItems.Add(file.CreationTime.ToShortDateString());
-            }
-            listview.SmallImageList = imageList1;
-            listview.LargeImageList = imageList2;
-
+            presenter = p;
         }
+
 
         private void listView1_Enter(object sender, EventArgs e)
         {
-            cPanel = CurrPanel.left;
-            Directory.SetCurrentDirectory(LeftDirectory.FullName);
+            cPanel = SelectedPanel.left;
+            presenter.SetCurrentDirectory(cPanel);
         }
 
         private void listView2_Enter(object sender, EventArgs e)
         {
-            cPanel = CurrPanel.right;
-            Directory.SetCurrentDirectory(RightDirectory.FullName);
+            cPanel = SelectedPanel.right;
+            presenter.SetCurrentDirectory(cPanel);
         }
 
         public void ChangeViewMode(object sender, EventArgs e)
         {
             string mode = (sender as ToolStripMenuItem).Tag as string;
-            if (cPanel == CurrPanel.left)
+            if (cPanel == SelectedPanel.left)
             {
                 listView1.View = (View)Enum.Parse(typeof(View), mode);
             }
@@ -115,7 +58,7 @@ namespace FileManagerProject
 
         private void listViewItemActivate(object sender, EventArgs e)
         {
-            var listview = sender as ListView;
+            var listview = sender as System.Windows.Forms.ListView;
             try
             {
                 if ((string)listview.FocusedItem.Tag == "File")
@@ -139,27 +82,26 @@ namespace FileManagerProject
 
         }
 
-        private void ChangeDir(string path, CurrPanel cPanel)
+        private void ChangeDir(string path, SelectedPanel cPanel)
         {
             var newDir = new DirectoryInfo(path);
-            Directory.SetCurrentDirectory(path);
-            if (cPanel == CurrPanel.left)
+            presenter.SetDirectory(cPanel, newDir);
+            presenter.SetCurrentDirectory(cPanel);
+            if (cPanel == SelectedPanel.left)
             {
-                LeftDirectory = newDir;
-                PopulateListView(newDir, listView1);
+                presenter.SetListView(cPanel);
             }
             else
             {
-                RightDirectory = newDir;
-                PopulateListView(newDir, listView2);
+                presenter.SetListView(cPanel);
             }
         }
 
         private void CopyFiles(object sender, EventArgs e)
         {
             //fileManagerFacade._effect = OperationEffect.copy;
-            ListView listView;
-            if (cPanel == CurrPanel.left)
+            System.Windows.Forms.ListView listView;
+            if (cPanel == SelectedPanel.left)
             {
                 listView = listView1;
             }
@@ -170,28 +112,31 @@ namespace FileManagerProject
             var items = new List<string>();
             foreach (ListViewItem item in listView.SelectedItems)
             {
-                items.Add(Directory.GetCurrentDirectory() + "\\" + item.Text);
+                items.Add(item.Text);
             }
-            fileManagerFacade.copy(items);
+            presenter.copy(items);
 
 
         }
 
         public void PasteFiles(object sender, EventArgs e)
         {
-            string sourcePath;
-            sourcePath = Directory.GetCurrentDirectory();
-
-            fileManagerFacade.paste(sourcePath);
-            PopulateListView(LeftDirectory, listView1);
-            PopulateListView(RightDirectory, listView2);
+            presenter.paste();
+            if (cPanel == SelectedPanel.left)
+            {
+                presenter.SetListView(cPanel);
+            }
+            else
+            {
+                presenter.SetListView(cPanel);
+            }
         }
 
         private void listView1_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
-                    contextMenuStrip1.Show(Cursor.Position);
+                contextMenuStrip1.Show(Cursor.Position);
             }
         }
 
@@ -199,14 +144,14 @@ namespace FileManagerProject
         {
             if (e.Button == MouseButtons.Right)
             {
-                    contextMenuStrip1.Show(Cursor.Position);
+                contextMenuStrip1.Show(Cursor.Position);
             }
         }
 
         private void CutFiles(object sender, EventArgs e)
         {
-            ListView listView;
-            if (cPanel == CurrPanel.left)
+            System.Windows.Forms.ListView listView;
+            if (cPanel == SelectedPanel.left)
             {
                 listView = listView1;
             }
@@ -217,9 +162,9 @@ namespace FileManagerProject
             var items = new List<string>();
             foreach (ListViewItem item in listView.SelectedItems)
             {
-                items.Add(Directory.GetCurrentDirectory() + "\\" + item.Text);
+                items.Add(item.Text);
             }
-            fileManagerFacade.cut(items);
+            presenter.cut(items);
         }
 
         private void toolStripButton5_Click(object sender, EventArgs e)
@@ -229,7 +174,7 @@ namespace FileManagerProject
                 var searchBox = new SearchForm();
                 searchBox.ShowDialog();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -237,11 +182,11 @@ namespace FileManagerProject
 
         public void DeleteFiles(object sender, EventArgs e)
         {
-            ListView listView;
+            System.Windows.Forms.ListView listView;
             DialogResult result = MessageBox.Show("Вы действительно хотите удалить выбранные папки и файлы?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
-                if (cPanel == CurrPanel.left)
+                if (cPanel == SelectedPanel.left)
                 {
                     listView = listView1;
                 }
@@ -256,15 +201,92 @@ namespace FileManagerProject
                 }
                 try
                 {
-                    fileManagerFacade.delete(items);
-                    PopulateListView(LeftDirectory, listView1);
-                    PopulateListView(RightDirectory, listView2);
+                    presenter.delete(items);
+                    presenter.SetListView(cPanel);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
+            }
+        }
+
+        public void SetUpComboboxes(DriveInfo[] drives)
+        {
+            comboBox1.Items.AddRange(drives);
+            comboBox2.Items.AddRange(drives);
+            comboBox1.SelectedIndex = comboBox2.SelectedIndex = 0;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            presenter.SetUpDriveLists();
+
+            imageList1.Images.Clear();
+            imageList2.Images.Clear();
+            presenter.ChangeDrive(SelectedPanel.left);
+            presenter.ChangeDrive(SelectedPanel.right);
+            presenter.SetListView(SelectedPanel.left);
+            presenter.SetListView(SelectedPanel.right);
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            presenter.ChangeDrive(SelectedPanel.left);
+            
+        }
+
+        public DriveInfo selectedDrive1 { get { return (DriveInfo)comboBox1.SelectedItem; } }
+        public DriveInfo selectedDrive2 { get { return (DriveInfo)comboBox2.SelectedItem; } }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            presenter.ChangeDrive(SelectedPanel.right);
+        }
+
+        public void PopulateListView(SelectedPanel selectedPanel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddItemToListView(SelectedPanel selectedPanel, ListViewItem item)
+        {
+            if (selectedPanel == SelectedPanel.left)
+                listView1.Items.Add(item);
+            else
+                listView2.Items.Add(item);
+        }
+
+        public void AddImageToList(SelectedPanel selectedPanel, string str, Bitmap image)
+        {
+            if(selectedPanel == SelectedPanel.left)
+            {
+                listView1.SmallImageList.Images.Add(str, image);
+                listView1.LargeImageList.Images.Add(str, image);
+            }
+            else
+            {
+                listView2.SmallImageList.Images.Add(str, image);
+                listView2.LargeImageList.Images.Add(str, image);
+            }
+        }
+
+        public void ImageListClear()
+        {
+            imageList1.Images.Clear();
+            imageList2.Images.Clear();
+        }
+
+        public void ListViewItemsClear(SelectedPanel selectedPanel)
+        {
+            if (selectedPanel == SelectedPanel.left)
+            {
+                listView1.Items.Clear();
+            }
+            else
+            {
+                listView2.Items.Clear();
             }
         }
     }
