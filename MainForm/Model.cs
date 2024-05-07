@@ -4,10 +4,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic.FileIO;
 
-namespace FileManagerProject
+namespace FileManagerProject.MainForm
 {
-    public class Model : IModel
+    public class Model : IMainModel
     {
         public DriveInfo[] DrivesArray { get; set; }
         public Model()
@@ -74,10 +75,10 @@ namespace FileManagerProject
             Clipboard.Clear();
             Clipboard.SetData(DataFormats.Serializable, paths);
         }
-        
+
         public string GetCurrentDirectory()
         {
-           return Directory.GetCurrentDirectory();
+            return Directory.GetCurrentDirectory();
         }
 
         public void copyDirectory(string sourceDir, string destinationDir)
@@ -155,6 +156,62 @@ namespace FileManagerProject
 
                 }
             }
+        }
+
+        public void Delete(List<string> paths)
+        {
+            foreach (string filePath in paths)
+            {
+                if (File.Exists(filePath))
+                {
+                    FileSystem.DeleteFile(filePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                }
+                else if (Directory.Exists(filePath))
+                {
+                    FileSystem.DeleteDirectory(filePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin); // Recursive delete for directories
+                }
+            }
+            paths.Clear(); // Clear the list after deletion
+        }
+
+        public bool IsFileExists(SelectedPanel cPanel, string? label)
+        {
+            if (cPanel == SelectedPanel.left)
+            {
+                if (File.Exists(leftDirectory.FullName + "\\" + label))
+                    return true;
+                else
+                    return false;
+            }
+            else
+                if (File.Exists(rightDirectory.FullName + "\\" + label))
+                return true;
+            else
+                return false;
+
+        }
+
+        public void ChangeFileName(SelectedPanel cPanel, string label, string oldName)
+        {
+        
+                if (cPanel == SelectedPanel.left)
+                {
+                    if(File.Exists(leftDirectory.FullName + "\\" + oldName))
+                        System.IO.File.Move(leftDirectory.FullName + "\\" + oldName, leftDirectory.FullName + "\\" + label);
+                    else if(Directory.Exists(leftDirectory.FullName + "\\" + oldName))
+                        System.IO.Directory.Move(leftDirectory.FullName + "\\" + oldName, leftDirectory.FullName + "\\" + label);
+                }
+                else
+                {
+                if (File.Exists(rightDirectory.FullName + "\\" + oldName))
+                    System.IO.File.Move(rightDirectory.FullName + "\\" + oldName, rightDirectory.FullName + "\\" + label);
+                else if (Directory.Exists(rightDirectory.FullName + "\\" + oldName))
+                    System.IO.File.Move(rightDirectory.FullName + "\\" + oldName, rightDirectory.FullName + "\\" + label);
+            }
+                    
+            
+            
+
         }
     }
 }

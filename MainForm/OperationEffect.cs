@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileManagerProject
+namespace FileManagerProject.MainForm
 {
-    public enum SelectedPanel
+    public enum OperationEffect
     {
-        left,
-        right
+        copy,
+        cut
     }
 }

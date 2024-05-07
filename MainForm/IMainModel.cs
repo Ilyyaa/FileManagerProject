@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileManagerProject
+namespace FileManagerProject.MainForm
 {
-    public interface IModel
+    public interface IMainModel
     {
         public DriveInfo[] GetDrives();
         public void SetDirectory(SelectedPanel panel, DirectoryInfo rootDirectory);
@@ -18,5 +18,8 @@ namespace FileManagerProject
         public void PathsToClipboard(List<string> paths);
         public void Paste(string sourcePath, OperationEffect _effect);
         public void copyDirectory(string sourceDir, string destinationDir);
+        public void Delete(List<string> paths);
+        public bool IsFileExists(SelectedPanel cPanel, string? label);
+        void ChangeFileName(SelectedPanel cPanel, string label, string oldName);
     }
 }

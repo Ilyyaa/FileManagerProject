@@ -7,16 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FileManagerProject.SearchForm;
 
 namespace FileManagerProject
 {
-    public partial class SearchForm : Form
+    public partial class SearchView : Form, ISearchView
     {
-        SearchFacade SearchFacade;
+        SearchPresenter presenter;
         //FileTreeDialogue FileTreeDialogue;
-        public SearchForm()
+        public SearchView()
         {
-            SearchFacade = new SearchFacade();
             //FileTreeDialogue = new FileTreeDialogue();
             InitializeComponent();
         }
@@ -29,24 +29,38 @@ namespace FileManagerProject
         private void button2_Click(object sender, EventArgs e)
         {
             listBox1.Items.Clear();
-            //try
-            //{
-                SearchFacade.Search(textBox1.Text, textBox2.Text);
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
+            try
+            {
+                presenter.Search(textBox1.Text, textBox2.Text);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
-            if (SearchFacade.paths.Count == 0)
+            
+        }
+
+        public void SetPresenter(SearchPresenter _presenter)
+        {
+            presenter = _presenter;
+        }
+
+        public void ViewResults(List<string> paths)
+        {
+            if (paths.Count == 0)
             {
                 MessageBox.Show("Ничего не найдено!", "Поиск", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            listBox1.Items.AddRange(SearchFacade.paths.ToArray());
+            listBox1.Items.AddRange(paths.ToArray());
+
         }
 
-        
+        void ISearchView.ShowDialog()
+        {
+            this.ShowDialog();
+        }
     }
 }

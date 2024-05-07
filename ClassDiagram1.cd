@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FileManagerProject.MainForm.Program">
+    <Position X="5.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FileManagerProject.MainForm.MainView">
+    <Position X="5.25" Y="5.5" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AQUAOAEgAKAgEQAaAECJAN/+gwEpAQAAAAwAE5QQIhA=</HashCode>
+      <FileName>MainForm\MainView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="cPanel" />
+      <Field Name="presenter" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FileManagerProject.MainForm.Presenter">
+    <Position X="10.25" Y="8.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEEAAAAAEIAAAAQQAACAAAAAIAAwAggAAIBAQ=</HashCode>
+      <FileName>MainForm\Presenter.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="model" />
+      <Field Name="view" />
+      <Field Name="_effect" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FileManagerProject.SearchView">
+    <Position X="17.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAACAEAACAAABAAAACACAACAAAwAAAAECAACKAAAAA=</HashCode>
+      <FileName>SearchForm\SearchView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="presenter" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FileManagerProject.SearchPresenter">
+    <Position X="21.25" Y="6.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAAAEAAAAAAAAAAQAAAAAoAAA=</HashCode>
+      <FileName>SearchForm\SearchPresenter.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="model" />
+      <Field Name="view" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="FileManagerProject.MainForm.IMainModel">
+    <Position X="13.75" Y="6.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAABAEABAAAAAGAAAAEQAAAgAEAAAAAAAAQAAgABAA=</HashCode>
+      <FileName>MainForm\IMainModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FileManagerProject.IView">
+    <Position X="13.75" Y="10.25" Width="2" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAQAKAAgAAAAEAAQAAAAAAAAAAABAAAAAAAAAgAAIAA=</HashCode>
+      <FileName>MainForm\IView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FileManagerProject.ISearchModel">
+    <Position X="23.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>SearchForm\ISearchModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FileManagerProject.ISearchView">
+    <Position X="21.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>SearchForm\ISearchView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="FileManagerProject.MainForm.SelectedPanel">
+    <Position X="10.25" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>MainForm\SelectedPanel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="FileManagerProject.MainForm.OperationEffect">
+    <Position X="10.25" Y="13.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>MainForm\OperationEffect.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

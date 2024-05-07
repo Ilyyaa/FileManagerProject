@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic.FileIO;
+﻿using FileManagerProject.MainForm;
+using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,15 +9,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace FileManagerProject
+namespace FileManagerProject.MainForm
 {
-    public  class Presenter
+    public class Presenter
     {
         public IView view;
-        public IModel model;
+        public IMainModel model;
         private OperationEffect _effect = OperationEffect.copy;
 
-        public Presenter(IView _view, IModel _model)
+        public Presenter(IView _view, IMainModel _model)
         {
             view = _view;
             model = _model;
@@ -70,7 +71,7 @@ namespace FileManagerProject
                 view.AddItemToListView(currPanel, item);
 
             }
-            
+
             foreach (var file in model.GetFiles(currPanel))
             {
 
@@ -80,7 +81,7 @@ namespace FileManagerProject
                 // Добавить элемент в ListView
                 view.AddItemToListView(currPanel, item);
                 item.SubItems.Add(file.Extension);
-                item.SubItems.Add(file.Length.ToString() + " bytes");
+                item.SubItems.Add(file.Length.ToString());
                 item.SubItems.Add(file.CreationTime.ToShortDateString());
                 view.AddImageToList(currPanel, file.FullName, Icon.ExtractAssociatedIcon(file.FullName).ToBitmap());
             }
@@ -114,57 +115,99 @@ namespace FileManagerProject
 
         public void copy(List<string> items)
         {
-            string CurrentDir = model.GetCurrentDirectory();
-            List<string> paths = new List<string>();
-            foreach(var item in items)
+            try
             {
-                paths.Add(CurrentDir + "\\" + item);
+                string CurrentDir = model.GetCurrentDirectory();
+                List<string> paths = new List<string>();
+                foreach (var item in items)
+                {
+                    paths.Add(CurrentDir + "\\" + item);
+                }
+                if (items.Any())
+                {
+                    _effect = OperationEffect.copy; // set the flag
+                    model.PathsToClipboard(paths);
+                }
             }
-            if (items.Any())
+            catch (Exception ex)
             {
-                _effect = OperationEffect.copy; // set the flag
-                model.PathsToClipboard(paths);
+                MessageBox.Show(ex.Message);
             }
+
         }
 
         public void paste()
         {
-            string sourcePath;
-            sourcePath = model.GetCurrentDirectory();
+            try
+            {
+                string sourcePath;
+                sourcePath = model.GetCurrentDirectory();
 
-            model.Paste(sourcePath, _effect);
+                model.Paste(sourcePath, _effect);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
-        internal void cut(List<string> items)
+        public void cut(List<string> items)
         {
-            string CurrentDir = model.GetCurrentDirectory();
-            List<string> paths = new List<string>();
-            foreach (var item in items)
+            try
             {
-                paths.Add(CurrentDir + "\\" + item);
+                string CurrentDir = model.GetCurrentDirectory();
+                List<string> paths = new List<string>();
+                foreach (var item in items)
+                {
+                    paths.Add(CurrentDir + "\\" + item);
+                }
+                if (items.Any())
+                {
+                    _effect = OperationEffect.cut; // set the flag
+                    model.PathsToClipboard(paths);
+                }
             }
-            if (items.Any())
+            catch (Exception ex)
             {
-                _effect = OperationEffect.cut; // set the flag
-                model.PathsToClipboard(paths);
+                MessageBox.Show(ex.Message);
+            }
+
+        }
+
+        public void delete(List<string> items)
+        {
+            try
+            {
+                string CurrentDir = model.GetCurrentDirectory();
+                List<string> paths = new List<string>();
+                foreach (var item in items)
+                {
+                    paths.Add(CurrentDir + "\\" + item);
+                }
+                if (items.Any())
+                {
+                    model.Delete(items);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
-        internal void delete(List<string> items)
+        internal bool AllowChangeLabel(SelectedPanel cPanel, string? label)
         {
-            model
-            foreach (string filePath in paths)
-            {
-                if (File.Exists(filePath))
-                {
-                    FileSystem.DeleteFile(filePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
-                }
-                else if (Directory.Exists(filePath))
-                {
-                    FileSystem.DeleteDirectory(filePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin); // Recursive delete for directories
-                }
-            }
-            paths.Clear(); // Clear the list after deletion
+            if (model.IsFileExists(cPanel, label))
+                return false;
+            else
+                return true;
+        }
+
+        internal void ChangeFileName(string oldName, SelectedPanel cPanel, string label)
+        {
+            model.ChangeFileName(cPanel, label, oldName);
         }
     }
 }

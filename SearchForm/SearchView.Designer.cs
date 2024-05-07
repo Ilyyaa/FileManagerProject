@@ -1,6 +1,6 @@
 ﻿namespace FileManagerProject
 {
-    partial class SearchForm
+    partial class SearchView
     {
         /// <summary>
         /// Required designer variable.
@@ -89,7 +89,7 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // SearchForm
+            // SearchView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -100,7 +100,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listBox1);
-            this.Name = "SearchForm";
+            this.Name = "SearchView";
             this.Text = "SearchForm";
             this.ResumeLayout(false);
             this.PerformLayout();
