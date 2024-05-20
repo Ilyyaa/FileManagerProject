@@ -175,7 +175,7 @@ namespace FileManagerProject.MainForm
 
         }
 
-        public void delete(List<string> items)
+        public async void delete(List<string> items)
         {
             try
             {
@@ -187,7 +187,11 @@ namespace FileManagerProject.MainForm
                 }
                 if (items.Any())
                 {
-                    model.Delete(items);
+                    await Task.Factory.StartNew(() => {
+
+                        model.Delete(items);
+                    });
+                    
                 }
 
             }
@@ -208,6 +212,11 @@ namespace FileManagerProject.MainForm
         internal void ChangeFileName(string oldName, SelectedPanel cPanel, string label)
         {
             model.ChangeFileName(cPanel, label, oldName);
+        }
+
+        public void ShowProperties(string name)
+        {
+            model.ShowProperties(name);
         }
     }
 }

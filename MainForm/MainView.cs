@@ -13,6 +13,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Reflection;
 using FileManagerProject.SearchForm;
 using System.Text;
+using System.Runtime.InteropServices;
 
 namespace FileManagerProject.MainForm
 {
@@ -517,6 +518,65 @@ namespace FileManagerProject.MainForm
         private void listView2_BeforeLabelEdit(object sender, LabelEditEventArgs e)
         {
 
+        }
+
+        private void ÒÓÁ‰‡Ú¸‘‡ÈÎToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var createFileView = new CreateFileView();
+                CreateFileModel createFileModel = new CreateFileModel();
+                CreateFilePresenter createFilePresenter = new CreateFilePresenter(createFileModel, createFileView);
+                createFilePresenter.ShowDialog();
+                presenter.SetListView(cPanel);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+    private void Ò‚ÓÈÒÚ‚‡ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.ListView listView;
+            if (cPanel == SelectedPanel.left)
+            {
+                listView = listView1;
+            }
+            else
+            {
+                listView = listView2;
+            }
+            var items = new List<string>();
+            foreach (ListViewItem item in listView.SelectedItems)
+            {
+                try
+                {
+                    presenter.ShowProperties(item.Text);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                
+            }
+        }
+
+        private void ÒÓÁ‰‡Ú¸ ‡Ú‡ÎÓ„ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var createFolderBox = new CreateFolderView();
+                CreateFolderModel createFolderModel = new CreateFolderModel();
+                CreateFolderPresenter createFolderPresenter = new CreateFolderPresenter(createFolderModel, createFolderBox);
+                createFolderPresenter.ShowDialog();
+                presenter.SetListView(cPanel);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
     }
     }

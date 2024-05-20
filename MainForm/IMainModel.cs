@@ -21,5 +21,6 @@ namespace FileManagerProject.MainForm
         public void Delete(List<string> paths);
         public bool IsFileExists(SelectedPanel cPanel, string? label);
         void ChangeFileName(SelectedPanel cPanel, string label, string oldName);
+        void ShowProperties(string name);
     }
 }

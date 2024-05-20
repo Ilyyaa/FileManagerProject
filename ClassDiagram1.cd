@@ -12,30 +12,38 @@
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
+    <NestedTypes>
+      <Class Name="FileManagerProject.MainForm.MainView.ItemComparer" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>MainForm\MainView.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AQUAOAEgAKAgEQAaAECJAN/+gwEpAQAAAAwAE5QQIhA=</HashCode>
+      <HashCode>AQUAOAEkAKAoGQAaEECJAN/+gwEpAQAAAAwEE5QwIpA=</HashCode>
       <FileName>MainForm\MainView.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="cPanel" />
       <Field Name="presenter" />
+      <Field Name="cPanel" />
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="FileManagerProject.MainForm.Presenter">
-    <Position X="10.25" Y="8.5" Width="1.75" />
+    <Position X="8.75" Y="5.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAEEAAAAAEIAAAAQQAACAAAAAIAAwAggAAIBAQ=</HashCode>
+      <HashCode>AAAAAAAEEAAAAAEIAAAAQQAAKAAAAAIAAwAggAAIBAQ=</HashCode>
       <FileName>MainForm\Presenter.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="model" />
       <Field Name="view" />
+      <Field Name="model" />
       <Field Name="_effect" />
     </ShowAsAssociation>
   </Class>
   <Class Name="FileManagerProject.SearchView">
-    <Position X="17.75" Y="6.75" Width="1.5" />
+    <Position X="17.5" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ACAACAEAACAAABAAAACACAACAAAwAAAAECAACKAAAAA=</HashCode>
       <FileName>SearchForm\SearchView.cs</FileName>
@@ -46,13 +54,57 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="FileManagerProject.SearchPresenter">
-    <Position X="21.25" Y="6.75" Width="1.5" />
+    <Position X="21" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAAAEAAAAAAAAAAQAAAAAoAAA=</HashCode>
+      <FileName>SearchForm\SearchPresenter.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="view" />
+      <Field Name="model" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FileManagerProject.CreateFileView">
+    <Position X="24.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAACAIAAAIAACAAAACAAAkAAAAEQAAAACAAAA=</HashCode>
+      <FileName>CreateFileForm\CreateFileView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="presenter" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FileManagerProject.CreateFilePresenter">
+    <Position X="28.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAEAAAAAAAAAAQAAAAAIAAA=</HashCode>
+      <FileName>CreateFileForm\CreateFilePresenter.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="model" />
+      <Field Name="view" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FileManagerProject.CreateFolderView">
+    <Position X="17.5" Y="11.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAQAAAAAAAAAAAAEAAAAAAAAAAQAAAAAoAAA=</HashCode>
-      <FileName>SearchForm\SearchPresenter.cs</FileName>
+      <HashCode>AAAACAAAACAAAAAAAACAAAACAAAsAAAAEECAAAAAAAA=</HashCode>
+      <FileName>CreateFolderView.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="presenter" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="FileManagerProject.CreateFolderPresenter">
+    <Position X="21" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAQAAAABIAAA=</HashCode>
+      <FileName>CreateFolderPresenter.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="model" />
@@ -60,14 +112,14 @@
     </ShowAsAssociation>
   </Class>
   <Interface Name="FileManagerProject.MainForm.IMainModel">
-    <Position X="13.75" Y="6.5" Width="2" />
+    <Position X="13.75" Y="5.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAABAEABAAAAAGAAAAEQAAAgAEAAAAAAAAQAAgABAA=</HashCode>
+      <HashCode>AAAABAEABAAAAAGAAAAEQAAAoAEAAAAAAAAQAAgABAA=</HashCode>
       <FileName>MainForm\IMainModel.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="FileManagerProject.IView">
-    <Position X="13.75" Y="10.25" Width="2" />
+    <Position X="11.5" Y="8.5" Width="2" />
     <Compartments>
       <Compartment Name="Properties" Collapsed="true" />
     </Compartments>
@@ -84,21 +136,49 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="FileManagerProject.ISearchView">
-    <Position X="21.25" Y="9" Width="1.5" />
+    <Position X="21" Y="8.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAACAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAACAAAAA=</HashCode>
       <FileName>SearchForm\ISearchView.cs</FileName>
     </TypeIdentifier>
   </Interface>
+  <Interface Name="FileManagerProject.ICreateFileModel">
+    <Position X="31.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CreateFileForm\ICreateFileModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FileManagerProject.ICreateFileView">
+    <Position X="28.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>CreateFileForm\ICreateFileView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FileManagerProject.ICreateFolderModel">
+    <Position X="22.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>ICreateFolderModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FileManagerProject.ICreateFolderView">
+    <Position X="21" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>ICreateFolderView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Enum Name="FileManagerProject.MainForm.SelectedPanel">
-    <Position X="10.25" Y="5.5" Width="1.75" />
+    <Position X="2.75" Y="5.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAgAA=</HashCode>
       <FileName>MainForm\SelectedPanel.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="FileManagerProject.MainForm.OperationEffect">
-    <Position X="10.25" Y="13.25" Width="1.75" />
+    <Position X="9" Y="9.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
       <FileName>MainForm\OperationEffect.cs</FileName>
