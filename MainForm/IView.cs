@@ -37,5 +37,6 @@ namespace FileManagerProject
         void AddImageToList(SelectedPanel selectedPanel, string str, Bitmap image);
         void ImageListClear();
         void ListViewItemsClear(SelectedPanel selectedPanel);
+        public void ChangeDirToFoundFile(string path, string filename);
     }
 }

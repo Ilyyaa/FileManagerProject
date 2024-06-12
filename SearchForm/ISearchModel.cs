@@ -8,6 +8,7 @@ namespace FileManagerProject
 {
     public interface ISearchModel
     {
-        public List<string> Search(string fileName, string dirPath);
+        public List<string> Search(string fileName, string dirPath, string inner_txt, DateTime leftTime, DateTime rightTime);
+        
     }
 }

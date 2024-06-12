@@ -33,8 +33,8 @@ namespace FileManagerProject
                 MessageBox.Show("Каталог с таким именем уже существует");
 
             }
-            else
-                model.CreateFolder(path, name);
+            //else
+                //model.CreateFolder(path, name);
             view.Close();
         }
     }

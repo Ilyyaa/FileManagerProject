@@ -11,5 +11,6 @@ namespace FileManagerProject
         public void SetPresenter(SearchPresenter _presenter);
         public void ShowDialog();
         public void ViewResults(List<string> paths);
+        public void EnableSearchButton();
     }
 }

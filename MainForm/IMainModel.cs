@@ -20,6 +20,7 @@ namespace FileManagerProject.MainForm
         public void copyDirectory(string sourceDir, string destinationDir);
         public void Delete(List<string> paths);
         public bool IsFileExists(SelectedPanel cPanel, string? label);
+        public void CreateShellLink(string name);
         void ChangeFileName(SelectedPanel cPanel, string label, string oldName);
         void ShowProperties(string name);
     }

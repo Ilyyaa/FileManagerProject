@@ -21,7 +21,8 @@ namespace FileManagerProject.MainForm
         {
             view = _view;
             model = _model;
-            view.SetPresenter(this);
+            view.SetPresenter(this); 
+            //model.SetPresenter(this);
         }
         /// <summary>
         /// Получает из модели информацию о доступных дисках и передает ее представлению
@@ -31,25 +32,25 @@ namespace FileManagerProject.MainForm
             DriveInfo[] drives = model.GetDrives();
             view.SetUpComboboxes(drives);
         }
-
+        public DriveInfo SelectedDrive { get; set; }
         /// <summary>
         /// Дает команду модели установить 
         /// </summary>
         /// <param name="selectedPanel"></param>
+        /// 
         public void ChangeDrive(SelectedPanel selectedPanel)
         {
-            DriveInfo selectedDrive;
             if (selectedPanel == SelectedPanel.left)
-                selectedDrive = view.selectedDrive1;
+                SelectedDrive = view.selectedDrive1;
             else
-                selectedDrive = view.selectedDrive2;
-            model.SetDirectory(selectedPanel, selectedDrive.RootDirectory);
+                SelectedDrive = view.selectedDrive2;
+            model.SetDirectory(selectedPanel, SelectedDrive.RootDirectory);
+            SetListView(selectedPanel);
         }
 
         public void SetListView(SelectedPanel currPanel)
         {
-            System.Windows.Forms.ListView listView;
-
+            //System.Windows.Forms.ListView listView;
             view.ListViewItemsClear(currPanel);
             if (!model.IsRootDirectory(currPanel))
             {
@@ -103,59 +104,35 @@ namespace FileManagerProject.MainForm
             var newDir = new DirectoryInfo(path);
             SetDirectory(cPanel, newDir);
             SetCurrentDirectory(cPanel);
-            if (cPanel == SelectedPanel.left)
-            {
-                SetListView(cPanel);
-            }
-            else
-            {
-                SetListView(cPanel);
-            }
+            SetListView(cPanel);
         }
 
         public void copy(List<string> items)
         {
-            try
-            {
                 string CurrentDir = model.GetCurrentDirectory();
                 List<string> paths = new List<string>();
                 foreach (var item in items)
                 {
                     paths.Add(CurrentDir + "\\" + item);
                 }
-                if (items.Any())
+                if (paths.Any())
                 {
                     _effect = OperationEffect.copy; // set the flag
                     model.PathsToClipboard(paths);
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
         }
 
         public void paste()
         {
-            try
-            {
-                string sourcePath;
-                sourcePath = model.GetCurrentDirectory();
-
-                model.Paste(sourcePath, _effect);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            string sourcePath;
+            sourcePath = model.GetCurrentDirectory();
+            model.Paste(sourcePath, _effect);
+            
 
         }
 
         public void cut(List<string> items)
         {
-            try
-            {
                 string CurrentDir = model.GetCurrentDirectory();
                 List<string> paths = new List<string>();
                 foreach (var item in items)
@@ -167,12 +144,6 @@ namespace FileManagerProject.MainForm
                     _effect = OperationEffect.cut; // set the flag
                     model.PathsToClipboard(paths);
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
         }
 
         public async void delete(List<string> items)
@@ -188,10 +159,10 @@ namespace FileManagerProject.MainForm
                 if (items.Any())
                 {
                     await Task.Factory.StartNew(() => {
-
                         model.Delete(items);
                     });
-                    
+                    SetListView(SelectedPanel.left);
+                    SetListView(SelectedPanel.right);
                 }
 
             }
@@ -201,7 +172,7 @@ namespace FileManagerProject.MainForm
             }
         }
 
-        internal bool AllowChangeLabel(SelectedPanel cPanel, string? label)
+        public bool AllowChangeLabel(SelectedPanel cPanel, string? label)
         {
             if (model.IsFileExists(cPanel, label))
                 return false;
@@ -209,7 +180,7 @@ namespace FileManagerProject.MainForm
                 return true;
         }
 
-        internal void ChangeFileName(string oldName, SelectedPanel cPanel, string label)
+        public void ChangeFileName(string oldName, SelectedPanel cPanel, string label)
         {
             model.ChangeFileName(cPanel, label, oldName);
         }
@@ -217,6 +188,15 @@ namespace FileManagerProject.MainForm
         public void ShowProperties(string name)
         {
             model.ShowProperties(name);
+        }
+
+
+
+        public void CreateShellLink(string text)
+        {
+            model.CreateShellLink(text);
+            SetListView(SelectedPanel.left);
+            SetListView(SelectedPanel.right);
         }
     }
 }

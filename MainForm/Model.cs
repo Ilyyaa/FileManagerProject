@@ -6,6 +6,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic.FileIO;
+using IWshRuntimeLibrary;
+using File = System.IO.File;
+using System.IO;
 
 namespace FileManagerProject.MainForm
 {
@@ -22,7 +25,7 @@ namespace FileManagerProject.MainForm
             return DrivesArray;
         }
 
-        DirectoryInfo leftDirectory, rightDirectory;
+        public DirectoryInfo leftDirectory, rightDirectory;
         public void SetDirectory(SelectedPanel panel, DirectoryInfo rootDirectory)
         {
             if (panel == SelectedPanel.left)
@@ -43,12 +46,16 @@ namespace FileManagerProject.MainForm
 
         public DirectoryInfo[] GetDirectories(SelectedPanel currPanel)
         {
-            if (currPanel == SelectedPanel.left)
-            {
-                return leftDirectory.GetDirectories();
-            }
-            else
-                return rightDirectory.GetDirectories();
+           
+                if (currPanel == SelectedPanel.left)
+                {
+                    return leftDirectory.GetDirectories();
+                }
+                else
+                    return rightDirectory.GetDirectories();
+            
+            
+           
         }
 
         public FileInfo[] GetFiles(SelectedPanel currPanel)
@@ -73,13 +80,29 @@ namespace FileManagerProject.MainForm
 
         public void PathsToClipboard(List<string> paths)
         {
-            Clipboard.Clear();
-            Clipboard.SetData(DataFormats.Serializable, paths);
+            try
+            {
+                Clipboard.Clear();
+                Clipboard.SetData(DataFormats.Serializable, paths);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         public string GetCurrentDirectory()
         {
-            return Directory.GetCurrentDirectory();
+            try
+            {
+                return Directory.GetCurrentDirectory();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return "";
+            }
         }
 
         public void copyDirectory(string sourceDir, string destinationDir)
@@ -113,63 +136,79 @@ namespace FileManagerProject.MainForm
 
         public void Paste(string sourcePath, OperationEffect _effect)
         {
-            if (Clipboard.ContainsData(DataFormats.Serializable))
+            try
             {
-                List<string> sourceFilePaths = (List<string>)Clipboard.GetData(DataFormats.Serializable);
-
-                foreach (string sourceFilePath in sourceFilePaths)
+                if (Clipboard.ContainsData(DataFormats.Serializable))
                 {
-                    try
-                    {
-                        string fileName = Path.GetFileName(sourceFilePath);
-                        string destinationFilePath = Path.Combine(sourcePath, fileName);
+                    List<string> sourceFilePaths = (List<string>)Clipboard.GetData(DataFormats.Serializable);
 
-                        if (File.Exists(sourceFilePath))
+                    foreach (string sourceFilePath in sourceFilePaths)
+                    {
+                        try
                         {
-                            if (_effect == OperationEffect.cut)
+                            string fileName = Path.GetFileName(sourceFilePath);
+                            string destinationFilePath = Path.Combine(sourcePath, fileName);
+
+                            if (File.Exists(sourceFilePath))
                             {
-                                File.Move(sourceFilePath, destinationFilePath);
+                                if (_effect == OperationEffect.cut)
+                                {
+                                    File.Move(sourceFilePath, destinationFilePath);
+                                }
+                                else
+                                {
+                                    File.Copy(sourceFilePath, destinationFilePath, false);
+                                }
                             }
-                            else
+                            else if (Directory.Exists(sourceFilePath))
                             {
-                                File.Copy(sourceFilePath, destinationFilePath, false);
+                                string sourceFolderName = new DirectoryInfo(sourceFilePath).Name;
+                                string destinationFolder = Path.Combine(sourcePath, sourceFolderName);
+
+                                if (_effect == OperationEffect.cut)
+                                {
+                                    Directory.Move(sourceFilePath, destinationFolder);
+                                }
+                                else
+                                {
+                                    copyDirectory(sourceFilePath, destinationFolder);
+                                }
                             }
                         }
-                        else if (Directory.Exists(sourceFilePath))
+                        catch (Exception ex)
                         {
-                            string sourceFolderName = new DirectoryInfo(sourceFilePath).Name;
-                            string destinationFolder = Path.Combine(sourcePath, sourceFolderName);
-
-                            if (_effect == OperationEffect.cut)
-                            {
-                                Directory.Move(sourceFilePath, destinationFolder);
-                            }
-                            else
-                            {
-                                copyDirectory(sourceFilePath, destinationFolder);
-                            }
+                            MessageBox.Show(ex.Message);
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
 
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         public void Delete(List<string> paths)
         {
             foreach (string filePath in paths)
             {
-                if (File.Exists(filePath))
+                try
                 {
-                    FileSystem.DeleteFile(filePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                    if (File.Exists(filePath))
+                    {
+                        FileSystem.DeleteFile(filePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                    }
+                    else if (Directory.Exists(filePath))
+                    {
+                        FileSystem.DeleteDirectory(filePath, UIOption.OnlyErrorDialogs,
+                            RecycleOption.SendToRecycleBin); // Recursive delete for directories
+                    }
                 }
-                else if (Directory.Exists(filePath))
+                catch (Exception ex)
                 {
-                    FileSystem.DeleteDirectory(filePath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin); // Recursive delete for directories
+                    MessageBox.Show(ex.Message);
                 }
             }
             paths.Clear(); // Clear the list after deletion
@@ -258,5 +297,23 @@ namespace FileManagerProject.MainForm
         {
             ShowFilePropertiesDialog(Directory.GetCurrentDirectory() + "\\" + name);
         }
+
+        public void CreateShellLink(string name)
+        {
+            string destPath = Path.Combine(GetCurrentDirectory(), Path.GetFileName(name) + ".lnk");
+            WshShell wshShell = new WshShell(); //создаем объект wsh shell
+
+            IWshShortcut Shortcut = (IWshShortcut)wshShell.
+                CreateShortcut(Path.Combine(GetCurrentDirectory(), Path.GetFileName(name) + ".lnk"));
+
+            Shortcut.TargetPath = Path.Combine(GetCurrentDirectory(), name); //путь к целевому файлу
+
+            Shortcut.Save();
+        }
+        
+
+       
+
+        
     }
 }

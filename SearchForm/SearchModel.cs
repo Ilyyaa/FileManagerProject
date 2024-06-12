@@ -10,28 +10,63 @@ namespace FileManagerProject.SearchForm
     public class SearchModel : ISearchModel
     {
         List<string> paths;
+
         public SearchModel()
         {
             paths = new List<string>();
         }
-        public List<string> Search(string fileName, string dirPath)
+
+        public List<string> Search(string fileName, string dirPath, string inner_txt, DateTime leftTime,
+            DateTime rightTime)
         {
 
             if (Directory.Exists(dirPath))
             {
-                var filePaths =  Directory.EnumerateFiles(dirPath, fileName, new EnumerationOptions
+                List<string> filePaths = Directory.EnumerateFiles(dirPath, fileName, new EnumerationOptions
                 {
                     IgnoreInaccessible = true,
                     RecurseSubdirectories = true
-                });
-                var dirPaths = Directory.EnumerateDirectories(dirPath, fileName, new EnumerationOptions
+                }).ToList();
+                foreach (var filePath in filePaths.ToList())
                 {
-                    IgnoreInaccessible = true,
-                    RecurseSubdirectories = true
-                });
-                paths.AddRange(filePaths); paths.AddRange(dirPaths);
+                    FileInfo file = new FileInfo(filePath);
+                    if (file.LastWriteTime < leftTime && file.LastWriteTime > rightTime)
+                    {
+                        filePaths.Remove(filePath);
+                    }
+                }
+
+                if (inner_txt != null && inner_txt != "")
+                {
+                    foreach (var filePath in filePaths.ToList())
+                    {
+                        if (Path.GetExtension(filePath) != ".txt")
+                            filePaths.Remove(filePath);
+                        else
+                        {
+                            string fileContents = File.ReadAllText(filePath);
+                            if (!fileContents.Contains(inner_txt))
+                            {
+                                filePaths.Remove(filePath);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    var dirPaths = Directory.EnumerateDirectories(dirPath, fileName, new EnumerationOptions
+                    {
+                        IgnoreInaccessible = true,
+                        RecurseSubdirectories = true
+                    });
+                    paths.AddRange(dirPaths);
+                }
+
+                paths.AddRange(filePaths);
             }
+
             return paths;
         }
+
     }
 }

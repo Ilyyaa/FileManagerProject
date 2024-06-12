@@ -57,7 +57,7 @@
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.textBox1);
             this.Name = "CreateFileView";
-            this.Text = "CreateBox";
+            this.Text = "Создать файл";
             this.ResumeLayout(false);
             this.PerformLayout();
 

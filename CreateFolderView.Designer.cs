@@ -57,7 +57,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.Name = "CreateFolderView";
-            this.Text = "CreateFolderView";
+            this.Text = "Создать каталог";
             this.ResumeLayout(false);
             this.PerformLayout();
 

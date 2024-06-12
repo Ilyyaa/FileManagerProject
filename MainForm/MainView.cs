@@ -25,6 +25,11 @@ namespace FileManagerProject.MainForm
         public MainView()
         {
             InitializeComponent();
+            ImageList iList = new ImageList();
+            iList.ImageSize = new Size(64, 64);
+            iList.ColorDepth = ColorDepth.Depth32Bit;
+            listView1.LargeImageList = iList;
+            listView2.LargeImageList = iList;
         }
 
         public void SetPresenter(Presenter p)
@@ -168,15 +173,25 @@ namespace FileManagerProject.MainForm
             }
             presenter.cut(items);
         }
-
+        public void ChangeDirToFoundFile(string path, string filename)
+        {
+            var newDir = new DirectoryInfo(path);
+            presenter.SetDirectory(SelectedPanel.left, newDir);
+            presenter.SetCurrentDirectory(SelectedPanel.left);
+            presenter.SetListView(SelectedPanel.left);
+            ListViewItem item = listView1.FindItemWithText(Path.GetFileName(filename));
+            item.Selected = true;
+            item.EnsureVisible();
+        }
         private void OpenSearchBox(object sender, EventArgs e)
         {
             try
             {
                 var searchBox = new SearchView();
                 SearchModel searchModel = new SearchModel();
-                SearchPresenter SearchPresenter = new SearchPresenter(searchModel, searchBox);
+                SearchPresenter SearchPresenter = new SearchPresenter(searchModel, searchBox, this);
                 SearchPresenter.ShowDialog();
+                
             }
             catch (Exception ex)
             {
@@ -283,6 +298,7 @@ namespace FileManagerProject.MainForm
                 listView2.SmallImageList.Images.Add(str, image);
                 listView2.LargeImageList.Images.Add(str, image);
             }
+            
         }
 
         public void ImageListClear()
@@ -576,6 +592,35 @@ namespace FileManagerProject.MainForm
             {
                 MessageBox.Show(ex.Message);
             }
+            
+        }
+
+        private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            presenter.ChangeDrive(SelectedPanel.left);
+        }
+
+        private void ÒÓÁ‰‡Ú¸ﬂÎ˚ÍToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.ListView listView;
+            if (cPanel == SelectedPanel.left)
+            {
+                listView = listView1;
+            }
+            else
+            {
+                listView = listView2;
+            }
+           
+            try
+            {
+                presenter.CreateShellLink(listView.SelectedItems[0].Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Œ¯Ë·Í‡!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
             
         }
     }

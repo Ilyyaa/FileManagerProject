@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainView));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -67,6 +66,7 @@
             this.создатьФайлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.свойстваToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.создатьКаталогToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.создатьЯрлыкToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -89,7 +89,7 @@
             this.toolStripButton5});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(800, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1850, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -141,7 +141,7 @@
             // toolStripButton5
             // 
             this.toolStripButton5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton5.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton5.Image")));
+            this.toolStripButton5.Image = global::FileManagerProject.Properties.Resources.search;
             this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton5.Name = "toolStripButton5";
             this.toolStripButton5.Size = new System.Drawing.Size(23, 22);
@@ -154,7 +154,7 @@
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1850, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -207,8 +207,8 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.listView2);
             this.splitContainer1.Panel2.Controls.Add(this.panel2);
-            this.splitContainer1.Size = new System.Drawing.Size(800, 393);
-            this.splitContainer1.SplitterDistance = 393;
+            this.splitContainer1.Size = new System.Drawing.Size(1850, 764);
+            this.splitContainer1.SplitterDistance = 907;
             this.splitContainer1.TabIndex = 2;
             // 
             // listView1
@@ -223,7 +223,7 @@
             this.listView1.LargeImageList = this.imageList2;
             this.listView1.Location = new System.Drawing.Point(0, 50);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(393, 343);
+            this.listView1.Size = new System.Drawing.Size(907, 714);
             this.listView1.SmallImageList = this.imageList2;
             this.listView1.TabIndex = 1;
             this.listView1.UseCompatibleStateImageBehavior = false;
@@ -238,18 +238,22 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Имя";
+            this.columnHeader1.Width = 100;
             // 
             // columnHeader2
             // 
             this.columnHeader2.Text = "Тип";
+            this.columnHeader2.Width = 100;
             // 
             // columnHeader3
             // 
             this.columnHeader3.Text = "Размер";
+            this.columnHeader3.Width = 100;
             // 
             // columnHeader4
             // 
             this.columnHeader4.Text = "Дата";
+            this.columnHeader4.Width = 100;
             // 
             // imageList2
             // 
@@ -263,7 +267,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(393, 50);
+            this.panel1.Size = new System.Drawing.Size(907, 50);
             this.panel1.TabIndex = 0;
             // 
             // comboBox1
@@ -274,6 +278,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 23);
             this.comboBox1.TabIndex = 0;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged_1);
             // 
             // listView2
             // 
@@ -287,7 +292,7 @@
             this.listView2.LargeImageList = this.imageList2;
             this.listView2.Location = new System.Drawing.Point(0, 50);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(403, 343);
+            this.listView2.Size = new System.Drawing.Size(939, 714);
             this.listView2.SmallImageList = this.imageList1;
             this.listView2.TabIndex = 2;
             this.listView2.UseCompatibleStateImageBehavior = false;
@@ -302,18 +307,22 @@
             // columnHeader5
             // 
             this.columnHeader5.Text = "Имя";
+            this.columnHeader5.Width = 100;
             // 
             // columnHeader6
             // 
             this.columnHeader6.Text = "Тип";
+            this.columnHeader6.Width = 100;
             // 
             // columnHeader7
             // 
             this.columnHeader7.Text = "Размер";
+            this.columnHeader7.Width = 100;
             // 
             // columnHeader8
             // 
             this.columnHeader8.Text = "Дата";
+            this.columnHeader8.Width = 100;
             // 
             // imageList1
             // 
@@ -327,7 +336,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(403, 50);
+            this.panel2.Size = new System.Drawing.Size(939, 50);
             this.panel2.TabIndex = 1;
             // 
             // comboBox2
@@ -349,9 +358,10 @@
             this.вырезатьToolStripMenuItem,
             this.создатьФайлToolStripMenuItem,
             this.свойстваToolStripMenuItem,
-            this.создатьКаталогToolStripMenuItem});
+            this.создатьКаталогToolStripMenuItem,
+            this.создатьЯрлыкToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 158);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 180);
             this.contextMenuStrip1.Click += new System.EventHandler(this.CutFiles);
             // 
             // copyContextMenuItem1
@@ -402,11 +412,18 @@
             this.создатьКаталогToolStripMenuItem.Text = "Создать каталог";
             this.создатьКаталогToolStripMenuItem.Click += new System.EventHandler(this.создатьКаталогToolStripMenuItem_Click);
             // 
+            // создатьЯрлыкToolStripMenuItem
+            // 
+            this.создатьЯрлыкToolStripMenuItem.Name = "создатьЯрлыкToolStripMenuItem";
+            this.создатьЯрлыкToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.создатьЯрлыкToolStripMenuItem.Text = "Создать ярлык";
+            this.создатьЯрлыкToolStripMenuItem.Click += new System.EventHandler(this.создатьЯрлыкToolStripMenuItem_Click);
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 442);
+            this.ClientSize = new System.Drawing.Size(1850, 813);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -469,5 +486,6 @@
         private ToolStripMenuItem создатьФайлToolStripMenuItem;
         private ToolStripMenuItem свойстваToolStripMenuItem;
         private ToolStripMenuItem создатьКаталогToolStripMenuItem;
+        private ToolStripMenuItem создатьЯрлыкToolStripMenuItem;
     }
 }
