@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileManagerProject.MainForm;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -31,7 +32,15 @@ namespace FileManagerProject
         string name { get => textBox1.Text;  }
         private void buttonOk_Click(object sender, EventArgs e)
         {
-            presenter.CreateFile(name);
+            try
+            {
+                presenter.CreateFile(name);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         void Close()

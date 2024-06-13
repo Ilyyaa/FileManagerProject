@@ -31,7 +31,14 @@ namespace FileManagerProject
         string name { get => textBox1.Text; }
         private void button1_Click(object sender, EventArgs e)
         {
-            presenter.CreateFolder(name);
+            try
+            {
+                presenter.CreateFolder(name);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

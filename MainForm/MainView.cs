@@ -129,14 +129,8 @@ namespace FileManagerProject.MainForm
         public void PasteFiles(object sender, EventArgs e)
         {
             presenter.paste();
-            if (cPanel == SelectedPanel.left)
-            {
-                presenter.SetListView(cPanel);
-            }
-            else
-            {
-                presenter.SetListView(cPanel);
-            }
+            presenter.SetListView(SelectedPanel.left);
+            presenter.SetListView(SelectedPanel.right);
         }
 
         private void listView1_MouseDown(object sender, MouseEventArgs e)

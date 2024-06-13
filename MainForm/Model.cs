@@ -233,7 +233,6 @@ namespace FileManagerProject.MainForm
 
         public void ChangeFileName(SelectedPanel cPanel, string label, string oldName)
         {
-        
                 if (cPanel == SelectedPanel.left)
                 {
                     if(File.Exists(leftDirectory.FullName + "\\" + oldName))
@@ -248,10 +247,6 @@ namespace FileManagerProject.MainForm
                 else if (Directory.Exists(rightDirectory.FullName + "\\" + oldName))
                     System.IO.File.Move(rightDirectory.FullName + "\\" + oldName, rightDirectory.FullName + "\\" + label);
             }
-                    
-            
-            
-
         }
         [DllImport("shell32.dll", CharSet = CharSet.Auto)]
         static extern bool ShellExecuteEx(ref SHELLEXECUTEINFO lpExecInfo);

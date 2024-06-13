@@ -127,7 +127,6 @@ namespace FileManagerProject.MainForm
             string sourcePath;
             sourcePath = model.GetCurrentDirectory();
             model.Paste(sourcePath, _effect);
-            
 
         }
 
@@ -144,6 +143,7 @@ namespace FileManagerProject.MainForm
                     _effect = OperationEffect.cut; // set the flag
                     model.PathsToClipboard(paths);
                 }
+                
         }
 
         public async void delete(List<string> items)

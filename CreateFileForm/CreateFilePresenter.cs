@@ -24,15 +24,17 @@ namespace FileManagerProject
 
         public void CreateFile(string name)
         {
-            string path = model.GetDirPath();
-            if (!model.CreateFile(path, name))
-            {
-                MessageBox.Show("Файл с таким именем уже существует");
-
-            }
-            //else
-            //    model.CreateFile(path, name);
-            view.Close();
+                string path = model.GetDirPath();
+                
+                    if (!model.CreateFile(path, name))
+                    {
+                        
+                        throw new Exception("Файл с таким именем уже существует");
+                    }
+                
+            
+                view.Close();
+            
         }  
     }
 }

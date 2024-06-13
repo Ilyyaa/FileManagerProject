@@ -27,15 +27,20 @@ namespace FileManagerProject
 
         public void CreateFolder(string name)
         {
-            string path = model.GetDirPath();
-            if (!model.CreateFolder(path, name))
-            {
-                MessageBox.Show("Каталог с таким именем уже существует");
 
-            }
-            //else
+                string path = model.GetDirPath();
+
+                    if (!model.CreateFolder(path, name))
+                    {
+                        throw new Exception("Файл с таким именем уже существует");
+                    }
+                
+
+
+                //else
                 //model.CreateFolder(path, name);
-            view.Close();
+                view.Close();
+           
         }
     }
 }
